@@ -44,32 +44,48 @@ def callback():
 
 def yahoonews():
     url = requests.get('https://tw.yahoo.com/')
-    if url.status_code == requests.codes.ok:
+    if url.status_code == requests.codes.ok:#檢查有無成功連上
         soup = BeautifulSoup(url.text,'html.parser')
         content=""
-        count=1
-        stories=soup.find_all('a',class_='story-title')
+        count=1#用來算index
+        stories=soup.find_all('a',class_='story-title')#用html直接找
         for s in stories:
-            content = content + s.text + "\n" + s.get('href') + "\n" 
+            content = content + s.text + "\n" + s.get('href') + "\n" #取超連結合成字串 
             if(count==5):
                 break
             count=count+1
+    return content
+
+def movie():
+    url = 'http://www.atmovies.com.tw/movie/next/0/'
+    res=requests.get(url)
+    res.encoding = 'utf-8'
+    soup = BeautifulSoup(res.text, 'html.parser')
+    content = ""
+    for index, data in enumerate(soup.select('ul.filmNextListAll a')):#use css to select
+        if index == 20:#取前20的電影
+            break;
+        title = data.text.replace('\t', '').replace('\r', '')#t歸位 r取消tab
+        link = "http://www.atmovies.com.tw" + data['href'] #取出超連結
+        content += '{}\n{}\n'.format(title, link)
     return content
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print("event.reply_token:", event.reply_token)
     print("event.message.text:", event.message.text)
-    if event.message.text == "yahoonews":
+    if event.message.text == "yahoo":
         content = yahoonews()
         line_bot_api.reply_message(
             event.reply_token,
         TextSendMessage(text=content))
         return 0
-    if event.message.text == "yahoo":
+    if event.message.text == "movie":
+        content = movie()
         line_bot_api.reply_message(
             event.reply_token,
-        TextSendMessage(text="yahhhhhh"))
+        TextSendMessage(text=content))
+        return 0
        
 
 import os
