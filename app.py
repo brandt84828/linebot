@@ -1,6 +1,7 @@
 import requests
 import re
 from bs4 import BeautifulSoup
+import random
 from flask import Flask, request, abort
 
 from linebot import (
