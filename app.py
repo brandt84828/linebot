@@ -176,14 +176,14 @@ def handle_message(event):
         img_url = img()
         line_bot_api.reply_message(
             event.reply_token,
-        ImageSendMessage(original_content_url=img_url, preview_image_url=img_url))
+        ImageSendMessage(original_content_url='https://imgur.com/t9JoBGu', preview_image_url='https://imgur.com/t9JoBGu'))
         return 0
     
     if event.message.text == "test":
         img_url = img()
         line_bot_api.reply_message(
             event.reply_token,
-        TextSendMessage(text=img_url))
+        TextSendMessage(text="test"))
         return 0
     
 import os
