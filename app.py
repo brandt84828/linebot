@@ -137,6 +137,18 @@ def img():
 def handle_message(event):
     print("event.reply_token:", event.reply_token)
     print("event.message.text:", event.message.text)
+    if event.message.text == "test":
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text="test"))
+        return 0
+    
+    if event.message.text == "draw":
+        line_bot_api.reply_message(
+            event.reply_token,
+        ImageSendMessage(original_content_url='https://imgur.com/t9JoBGu', preview_image_url='https://imgur.com/t9JoBGu'))
+        return 0    
+    
     if event.message.text == "yahoo":
         content = yahoonews()
         line_bot_api.reply_message(
@@ -172,19 +184,9 @@ def handle_message(event):
         TextSendMessage(text=content))
         return 0  
     
-    if event.message.text == "draw":
-        img_url = img()
-        line_bot_api.reply_message(
-            event.reply_token,
-        ImageSendMessage(original_content_url='https://imgur.com/t9JoBGu', preview_image_url='https://imgur.com/t9JoBGu'))
-        return 0
+
     
-    if event.message.text == "test":
-        img_url = img()
-        line_bot_api.reply_message(
-            event.reply_token,
-        TextSendMessage(text="test"))
-        return 0
+
     
 import os
 if __name__ == "__main__":
