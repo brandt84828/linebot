@@ -116,6 +116,7 @@ def PttBeauty():
     return content
 
 def img():
+    #目標頁面
     res = requests.get('https://www.ptt.cc/bbs/Beauty/index.html')
     soup = BeautifulSoup(res.text, 'lxml')
     #使用迴圈進入到目標頁面中的每個主題頁面
@@ -129,8 +130,11 @@ def img():
         img=soup.select('.imgur-embed-pub a')
         for item in img:
             imglist.append(item['href'])
+            print(item['href'])
     img_url="https:"+imglist[random.randint(0,len(imglist))] 
-    return img_url
+    file_name = img_url[img_url.rindex("/")+1:]
+    jpg="https://i.imgur.com/"+file_name+".jpg"
+    return jpg
 
 
 @handler.add(MessageEvent, message=TextMessage)
@@ -145,9 +149,10 @@ def handle_message(event):
         return 0
     
     if event.message.text == "draw":
+        content=img()
         line_bot_api.reply_message(
             event.reply_token,
-        ImageSendMessage(original_content_url='https://i.imgur.com/t9JoBGu.jpg', preview_image_url='https://i.imgur.com/t9JoBGu.jpg'))
+        ImageSendMessage(original_content_url=content, preview_image_url=content))
         return 0    
     
     if event.message.text == "yahoo":
