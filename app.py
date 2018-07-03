@@ -128,8 +128,8 @@ def beautyimg():
         img=soup.select('.imgur-embed-pub a')
         for item in img:
             imglist.append(item['href'])
-        
-    return imglist[random.randint(0,len(imglist))] 
+    img_url="https:"+imglist[random.randint(0,len(imglist))] 
+    return img_url
 
 
 @handler.add(MessageEvent, message=TextMessage)
@@ -172,10 +172,14 @@ def handle_message(event):
         return 0  
     
     if event.message.text == "draw":
-        content = beautyimg()
+        img_url = beautyimg()
+        image_message = ImageSendMessage(
+            original_content_url=img_url,
+            preview_image_url=img_url
+        )
         line_bot_api.reply_message(
             event.reply_token,
-        TextSendMessage(text=content))
+        image_message)
         return 0
     
 import os
