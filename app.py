@@ -61,8 +61,12 @@ def handle_message(event):
         content = yahoonews()
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=content))
+        TextSendMessage(text=content))
         return 0
+    if event.message.text == "yahoo":
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text="yahhhhhh"))
        
 
 import os
