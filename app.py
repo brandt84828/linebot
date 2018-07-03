@@ -70,6 +70,7 @@ def movie():
         content += '{}\n{}\n'.format(title, link)
     return content
 
+
 def apple_news():
     url='https://tw.appledaily.com/new/realtime'
     res=requests.get(url)
@@ -78,9 +79,9 @@ def apple_news():
     for index, data in enumerate(soup.select('.rtddt a'), 0):#use CSs
         if index == 5:
             break;
-        print(data.text[9:].replace('\t', '').replace('\r', ''))
+        title=data.text[9:]
         link = data['href']#find href 
-        content += '{}\n{}\n'.format(data.text,link) 
+        content += '{}{}\n'.format(title,link) 
     return content
 
 @handler.add(MessageEvent, message=TextMessage)
