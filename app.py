@@ -12,6 +12,7 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, ImageSendMessage
 )
+from linebot.models import *
 #git add .
 #git commit -am "make it better"
 #git push heroku master
@@ -50,7 +51,7 @@ def yahoonews():
         count=1#用來算index
         stories=soup.find_all('a',class_='story-title')#用html直接找
         for s in stories:
-            content = content + s.text + "\n\n" + s.get('href') + "\n" #取超連結合成字串 
+            content = content + s.text + "\n" + s.get('href') + "\n\n" #取超連結合成字串 
             if(count==5):
                 break
             count=count+1
@@ -173,13 +174,16 @@ def handle_message(event):
     
     if event.message.text == "draw":
         img_url = beautyimg()
-        image_message = ImageSendMessage(
-            original_content_url=img_url,
-            preview_image_url=img_url
-        )
         line_bot_api.reply_message(
             event.reply_token,
-        image_message)
+        ImageSendMessage(original_content_url=img_url, preview_image_url=img_url))
+        return 0
+    
+    if event.message.text == "test":
+        img_url = beautyimg()
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text=img_url))
         return 0
     
 import os
