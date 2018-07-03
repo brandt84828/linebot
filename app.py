@@ -47,10 +47,13 @@ def yahoonews():
     if url.status_code == requests.codes.ok:
         soup = BeautifulSoup(url.text,'html.parser')
         content=""
+        count=1
         stories=soup.find_all('a',class_='story-title')
         for s in stories:
-            content = content + s.text + "\n" + s.get('href') + "\n"
-            
+            content = content + s.text + "\n" + s.get('href') + "\n" 
+            if(count==5):
+                break
+            count=count+1
     return content
 
 @handler.add(MessageEvent, message=TextMessage)
