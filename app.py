@@ -125,7 +125,7 @@ def handle_message(event):
         return 0     
     
     if event.message.text == "tech":
-        content = apple_news()
+        content = technews()
         line_bot_api.reply_message(
             event.reply_token,
         TextSendMessage(text=content))
