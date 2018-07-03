@@ -171,7 +171,7 @@ def handle_message(event):
         TextSendMessage(text=content))
         return 0  
     
-    if event.message.text == "抽":
+    if event.message.text == "draw":
         content = beautyimg()
         line_bot_api.reply_message(
             event.reply_token,
