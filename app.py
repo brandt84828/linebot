@@ -78,8 +78,9 @@ def apple_news():
     for index, data in enumerate(soup.select('.rtddt a'), 0):#use CSs
         if index == 5:
             break;
+        print(data.text[9:].replace('\t', '').replace('\r', ''))
         link = data['href']#find href 
-        content += '{}\n\n'.format(link) 
+        content += '{}\n{}\n'.format(data.text,link) 
     return content
 
 @handler.add(MessageEvent, message=TextMessage)
