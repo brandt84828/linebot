@@ -70,7 +70,6 @@ def movie():
         content += '{}\n{}\n'.format(title, link)
     return content
 
-
 def apple_news():
     url='https://tw.appledaily.com/new/realtime'
     res=requests.get(url)
@@ -97,6 +96,21 @@ def technews():
         title = data.text
         link = data['href']#在a標籤內取得˙href
         content += '{}\n{}\n\n'.format(title, link)
+    return content
+
+def PttBeauty():
+    res=requests.get('https://www.ptt.cc/bbs/Beauty/index.html')
+    soup = BeautifulSoup(res.text,'html.parser')
+    content=""
+    pageweb=soup.find_all('a',class_='btn wide')
+    pageweb1=str(pageweb[1].get('href'))
+    page=re.search('\d+',pageweb1).group()#利用正則表達抓出數字 group回傳抓到的 默認為0
+    for index,data in enumerate(soup.select('.title a'),0):
+        if "公告" in data.text:
+            break
+        title = data.text
+        link = "https://www.ptt.cc" + data['href'] #取出超連結
+        content += '{}\n{}\n'.format(title, link)
     return content
 
 @handler.add(MessageEvent, message=TextMessage)
@@ -129,7 +143,14 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
         TextSendMessage(text=content))
-        return 0  
+        return 0 
+    
+    if event.message.text == "pttbeauty":
+        content = PttBeauty()
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text=content))
+        return 0     
     
 import os
 if __name__ == "__main__":

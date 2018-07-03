@@ -4,3 +4,5 @@ Line Bot Test
 yahoonews
 movie
 applenews
+technews
+pttbeauty
