@@ -138,9 +138,10 @@ def handle_message(event):
     print("event.reply_token:", event.reply_token)
     print("event.message.text:", event.message.text)
     if event.message.text == "test":
+        content=img()
         line_bot_api.reply_message(
             event.reply_token,
-        TextSendMessage(text="test"))
+        TextSendMessage(text=content))
         return 0
     
     if event.message.text == "draw":
