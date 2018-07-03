@@ -50,7 +50,7 @@ def yahoonews():
         count=1#用來算index
         stories=soup.find_all('a',class_='story-title')#用html直接找
         for s in stories:
-            content = content + s.text + "\n" + s.get('href') + "\n" #取超連結合成字串 
+            content = content + s.text + "\n\n" + s.get('href') + "\n" #取超連結合成字串 
             if(count==5):
                 break
             count=count+1
