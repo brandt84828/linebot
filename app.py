@@ -70,6 +70,18 @@ def movie():
         content += '{}\n{}\n'.format(title, link)
     return content
 
+def apple_news():
+    url='https://tw.appledaily.com/new/realtime'
+    res=requests.get(url)
+    soup = BeautifulSoup(res.text,'html.parser')
+    content = ""
+    for index, data in enumerate(soup.select('.rtddt a'), 0):#use CSs
+        if index == 5:
+            break;
+        link = data['href']#find href 
+        content += '{}\n\n'.format(link) 
+    return content
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print("event.reply_token:", event.reply_token)
@@ -80,13 +92,20 @@ def handle_message(event):
             event.reply_token,
         TextSendMessage(text=content))
         return 0
+    
     if event.message.text == "movie":
         content = movie()
         line_bot_api.reply_message(
             event.reply_token,
         TextSendMessage(text=content))
         return 0
-       
+    
+    if event.message.text == "apple":
+        content = apple_news()
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text=content))
+        return 0      
 
 import os
 if __name__ == "__main__":
