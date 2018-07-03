@@ -84,6 +84,21 @@ def apple_news():
         content += '{}{}\n'.format(title,link) 
     return content
 
+def technews():
+    target_url = 'https://technews.tw/'
+    rs = requests.session()#保有cookie
+    res = rs.get(target_url, verify=False)
+    res.encoding = 'utf-8'
+    soup = BeautifulSoup(res.text, 'html.parser')
+    content = ""
+    for index, data in enumerate(soup.select('article div h1.entry-title a')):
+        if index == 10:#取10
+            break;
+        title = data.text
+        link = data['href']#在a標籤內取得˙href
+        content += '{}\n{}\n\n'.format(title, link)
+    return content
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print("event.reply_token:", event.reply_token)
@@ -107,8 +122,15 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
         TextSendMessage(text=content))
-        return 0      
-
+        return 0     
+    
+    if event.message.text == "tech":
+        content = apple_news()
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text=content))
+        return 0  
+    
 import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
