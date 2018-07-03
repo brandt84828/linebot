@@ -46,11 +46,12 @@ def yahoonews():
     url = requests.get('https://tw.yahoo.com/')
     if url.status_code == requests.codes.ok:
         soup = BeautifulSoup(url.text,'html.parser')
-        news=[] 
+        content=""
         stories=soup.find_all('a',class_='story-title')
         for s in stories:
-            news.append(s.text+" "+s.get('href'))
-    return news
+            content = content + s.text + "\n" + s.get('href') + "\n"
+            
+    return content
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
