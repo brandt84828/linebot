@@ -115,8 +115,7 @@ def PttBeauty():
         content += '{}\n{}\n'.format(title, link)
     return content
 
-def beautyimg():
-    #目標頁面
+def img():
     res = requests.get('https://www.ptt.cc/bbs/Beauty/index.html')
     soup = BeautifulSoup(res.text, 'lxml')
     #使用迴圈進入到目標頁面中的每個主題頁面
@@ -174,14 +173,14 @@ def handle_message(event):
         return 0  
     
     if event.message.text == "draw":
-        img_url = beautyimg()
+        img_url = img()
         line_bot_api.reply_message(
             event.reply_token,
         ImageSendMessage(original_content_url=img_url, preview_image_url=img_url))
         return 0
     
     if event.message.text == "test":
-        img_url = beautyimg()
+        img_url = img()
         line_bot_api.reply_message(
             event.reply_token,
         TextSendMessage(text=img_url))
