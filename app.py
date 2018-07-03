@@ -146,7 +146,7 @@ def handle_message(event):
     if event.message.text == "draw":
         line_bot_api.reply_message(
             event.reply_token,
-        ImageSendMessage(original_content_url='https://imgur.com/t9JoBGu', preview_image_url='https://imgur.com/t9JoBGu'))
+        ImageSendMessage(original_content_url='https://i.imgur.com/t9JoBGu.jpg', preview_image_url='https://i.imgur.com/t9JoBGu.jpg'))
         return 0    
     
     if event.message.text == "yahoo":
