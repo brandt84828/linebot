@@ -116,38 +116,20 @@ def PttBeauty():
     return content
 
 def img():
-    #目標頁面
-    res = requests.get('https://www.ptt.cc/bbs/Beauty/index.html')
-    soup = BeautifulSoup(res.text, 'lxml')
-    #使用迴圈進入到目標頁面中的每個主題頁面
+    url='https://docs.google.com/spreadsheets/d/e/2PACX-1vQeVDkvUJclURb7YNkEocyMmZc0nfLCagrE0p7JFOkPwDEL-SJLd519gkMicdl17-C2wgjc7jnZalfO/pubhtml'
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text,'html.parser')
     imglist=[]
-    for article in soup.select('.title a'):
-        url = 'https://www.ptt.cc' + article['href']
-        if "公告" in article.text:
-            break;
-        res = requests.get(url)
-        soup = BeautifulSoup(res.text, 'lxml')
-        img=soup.select('.imgur-embed-pub a')
-        for item in img:
-            imglist.append(item['href'])
-            print(item['href'])
-    img_url="https:"+imglist[random.randint(0,len(imglist))] 
-    file_name = img_url[img_url.rindex("/")+1:]
-    jpg="https://i.imgur.com/"+file_name+".jpg"
-    return jpg
+    for index,img in enumerate(soup.select('.softmerge-inner a'),0):
+        imglist.append(img.text)
+        
+    return imglist[random.randint(0,len(imglist))]
 
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print("event.reply_token:", event.reply_token)
-    print("event.message.text:", event.message.text)
-    if event.message.text == "test":
-        content=img()
-        line_bot_api.reply_message(
-            event.reply_token,
-        TextSendMessage(text=content))
-        return 0
-    
+    print("event.message.text:", event.message.text)    
     if event.message.text == "draw":
         content=img()
         line_bot_api.reply_message(
