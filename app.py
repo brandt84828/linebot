@@ -3,6 +3,7 @@ import re
 from bs4 import BeautifulSoup
 import random
 import time
+import json
 from flask import Flask, request, abort
 
 from linebot import (
@@ -149,11 +150,53 @@ def air():
     result=name+":"+level+"  "+"空氣品質指標為"+AQI+"   PM2.5為"+PM25
     return result
 
+def weather():
+    url='http://opendata.epa.gov.tw/ws/Data/ATM00698/?%24skip=0&%24top=1000&format=json&token=IfhCJYj7b0iN186BYwq/bQ'
+    res=requests.get(url)#爬gov opendata
+    data=json.loads(res.text)#載入json資料
+    
+    for info in data:
+        if info['SiteName']=="臺南":#抓取臺南最新資料
+            result="地點:臺南"+"  "+"發佈單位:"+info['Unit']+"  "+"天氣:"+info['Weather']+"  "+"溫度:"+info['Temperature']+"  "+"風向:"+info['WindDirection']+"  "+"風力:"+info['WindPower']+"  "+"濕度:"+info['Moisture']+"  "+"資料時間:"+info['DataCreationDate']
+            return result
+            break;
+    return 0
+
+def typhoonday():
+    url='http://typhoon.ws/lifeinfo/stop_working'
+    ress=requests.Session()
+    headers = {'user-agent': 'my-app/0.0.1'}
+    res=ress.get(url,headers=headers)#use header to solve Http406error
+    res.encoding = 'UTF-8'#解決亂碼
+    content=""
+    soup=BeautifulSoup(res.text,'html.parser')
+    table=soup.select('table.data_table_line')
+    #for rows in table[0].find_all('tr'): #分解table to tr and td
+    #    for cells in rows.find_all('td'):
+    #        print(cells.contents[0])  #type is tag so can't not use text >>content get list
+    for index,data in enumerate(table,0):
+        content=content+data.text
+    return content.replace("\n\n","\n").replace("\n\n\n","\n\n") #解決跨行
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print("event.reply_token:", event.reply_token)
     print("event.message.text:", event.message.text)    
 
+    if event.message.text == "停班停課":
+        content = typhoonday()
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text=content))
+        return 0
+    
+    if event.message.text == "weather":
+        content = weather()
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text=content))
+        return 0
+    
     if event.message.text == "air":
         content = air()
         line_bot_api.reply_message(
