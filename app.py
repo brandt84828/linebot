@@ -2,6 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 import random
+import time
 from flask import Flask, request, abort
 
 from linebot import (
@@ -145,6 +146,7 @@ def air():
         level="普通"
     else:
         level="良好"
+    time.sleep(1)
     result=name+":"+level+"  "+"空氣品質指標為"+AQI+"   PM2.5為"+PM25
     return result
 
@@ -152,7 +154,7 @@ def air():
 def handle_message(event):
     print("event.reply_token:", event.reply_token)
     print("event.message.text:", event.message.text)    
-    if event.message.text == "air":
+    if event.message.text == "空氣":
         content = air()
         line_bot_api.reply_message(
             event.reply_token,
