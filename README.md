@@ -6,3 +6,5 @@ movie
 applenews
 technews
 pttbeauty
+draw
+air
