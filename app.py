@@ -130,7 +130,7 @@ def air():
     url='https://taqm.epa.gov.tw/taqm/tw/Aqi/Yun-Chia-Nan.aspx?type=all&fm=AqiMap'
     ress=requests.session()
     res=ress.get(url)
-    soup = BeautifulSoup(res.text,'lxml')
+    soup = BeautifulSoup(res.text,'html.parser')
     name1=soup.find(id='ctl04_gvAll_ctl54_linkSite').text
     name=re.search('\S*',name1).group()#正則表達抓空白前的字串
     AQI=soup.find(id='ctl04_gvAll_ctl54_labPSI').text
