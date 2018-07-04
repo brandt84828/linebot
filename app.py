@@ -126,11 +126,41 @@ def img():
         
     return imglist[random.randint(0,len(imglist))]
 
+def air():
+    url='https://taqm.epa.gov.tw/taqm/tw/Aqi/Yun-Chia-Nan.aspx?type=all&fm=AqiMap'
+    ress=requests.session()
+    res=ress.get(url)
+    soup = BeautifulSoup(res.text,'lxml')
+    name1=soup.find(id='ctl04_gvAll_ctl54_linkSite').text
+    name=re.search('\S*',name1).group()#正則表達抓空白前的字串
+    AQI=soup.find(id='ctl04_gvAll_ctl54_labPSI').text
+    PM25=soup.find(id='ctl04_gvAll_ctl54_labPM25').text
+    level=""
+    if int(AQI) >=300:
+        level="有害"
+    elif int(AQI)<300 and int(AQI)>=200:
+        level="非常不良"
+    elif int(AQI)<200 and int(AQI)>=101:
+        level="不良"
+    elif int(AQI)>50 and int(AQI)<=100:
+        level="普通"
+    else:
+        level="良好"
+    result=name+":"+level+"  "+"空氣品質指標為"+AQI+"   PM2.5為"+PM25
+    return result
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print("event.reply_token:", event.reply_token)
     print("event.message.text:", event.message.text)    
 
+    if event.message.text == "air":
+        content = air()
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text=content))
+        return 0
+    
     if event.message.text == "draw":
         content=img()
         line_bot_api.reply_message(
