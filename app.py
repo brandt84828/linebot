@@ -127,9 +127,9 @@ def img():
 
 def air():
     url='https://taqm.epa.gov.tw/taqm/tw/Aqi/Yun-Chia-Nan.aspx?type=all&fm=AqiMap'
-    res=requests.get(url)
+    ress=requests.session()
+    res=ress.get(url)
     soup = BeautifulSoup(res.text,'lxml')
-    #table=soup.select('.TABLE_G')
     name1=soup.find(id='ctl04_gvAll_ctl54_linkSite').text
     name=re.search('\S*',name1).group()#正則表達抓空白前的字串
     AQI=soup.find(id='ctl04_gvAll_ctl54_labPSI').text
@@ -152,6 +152,13 @@ def air():
 def handle_message(event):
     print("event.reply_token:", event.reply_token)
     print("event.message.text:", event.message.text)    
+    if event.message.text == "air":
+        content = air()
+        line_bot_api.reply_message(
+            event.reply_token,
+        TextSendMessage(text=content))
+        return 0
+    
     if event.message.text == "draw":
         content=img()
         line_bot_api.reply_message(
@@ -193,13 +200,7 @@ def handle_message(event):
             event.reply_token,
         TextSendMessage(text=content))
         return 0  
-    
-    if event.message.text == "air":
-        content = air()
-        line_bot_api.reply_message(
-            event.reply_token,
-        TextSendMessage(text=content))
-        return 0
+
     
 import os
 if __name__ == "__main__":
