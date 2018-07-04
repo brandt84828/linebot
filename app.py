@@ -145,7 +145,8 @@ def air():
         level="普通"
     else:
         level="良好"
-    return name+":"+level+"  "+"空氣品質指標為"+AQI+"   PM2.5為"+PM25
+    result=name+":"+level+"  "+"空氣品質指標為"+AQI+"   PM2.5為"+PM25
+    return result
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
