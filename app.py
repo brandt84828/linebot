@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import random
 import time
 import json
+import configparser
 from flask import Flask, request, abort
 
 from linebot import (
@@ -22,11 +23,13 @@ from linebot.models import *
 
 
 app = Flask(__name__)
+config = configparser.ConfigParser()
+config.read("config.ini")
 
 # Channel Access Token
-line_bot_api = LineBotApi('PtqO0jaXvr1db2hQA441OTQ00sPEnj579B5fKJhQRachyyXa86WyMdKLwYhjOdAVyRFyE2vykS5ofXgVseUBu9mWhyPMCWZpryasr2IyQyp9qDz+2lCQZrrCwsLgzY87qbqPULLfNaBGfXgmAajdmAdB04t89/1O/w1cDnyilFU=')
+line_bot_api = LineBotApi(config['line_bot']['Channel_Access_Token'])
 # Channel Secret
-handler = WebhookHandler('7a6685fc2f39b661c6140fbe4918b534')
+handler = WebhookHandler(config['line_bot']['Channel_Secret'])
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])

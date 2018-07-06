@@ -7,3 +7,5 @@ applenews
 technews
 pttbeauty
 draw
+typhooday
+weather
