@@ -5,6 +5,7 @@ import random
 import time
 import json
 import configparser
+from imgurpython import ImgurClient
 from flask import Flask, request, abort
 
 from linebot import (
