@@ -6,6 +6,6 @@ movie
 applenews
 technews
 pttbeauty
-draw
+抽
 typhooday
 weather

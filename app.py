@@ -124,16 +124,6 @@ def PttBeauty():
         content += '{}\n{}\n'.format(title, link)
     return content
 
-def img():
-    url='https://docs.google.com/spreadsheets/d/e/2PACX-1vQeVDkvUJclURb7YNkEocyMmZc0nfLCagrE0p7JFOkPwDEL-SJLd519gkMicdl17-C2wgjc7jnZalfO/pubhtml'
-    res = requests.get(url)
-    soup = BeautifulSoup(res.text,'html.parser')
-    imglist=[]
-    for index,img in enumerate(soup.select('.softmerge-inner a'),0):
-        imglist.append(img.text)
-        
-    return imglist[random.randint(0,len(imglist))]
-
 def air():
     url='https://taqm.epa.gov.tw/taqm/tw/Aqi/Yun-Chia-Nan.aspx?type=all&fm=AqiMap'
     ress=requests.session()
@@ -223,13 +213,6 @@ def handle_message(event):
             event.reply_token,
         TextSendMessage(text=content))
         return 0
-    
-    if event.message.text == "draw":
-        content=img()
-        line_bot_api.reply_message(
-            event.reply_token,
-        ImageSendMessage(original_content_url=content, preview_image_url=content))
-        return 0    
     
     if event.message.text == "yahoo":
         content = yahoonews()
