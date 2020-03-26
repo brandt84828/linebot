@@ -1,6 +1,6 @@
-Line Bot Test
+# ""建立一個LineBot""
 
-目前功能:
+### 目前功能
 ===
 * yahoonews
 * movie
@@ -10,3 +10,5 @@ Line Bot Test
 * 抽
 * typhooday
 * weather
+
+![alt text](/linebot/LINEBOT.jpg "MyLineBot")
