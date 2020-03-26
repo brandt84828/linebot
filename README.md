@@ -11,4 +11,4 @@
 * typhooday
 * weather
 
-![alt text](/linebot/LINEBOT.jpg "MyLineBot")
+![alt text](/LINEBOT.jpg "MyLineBot")
